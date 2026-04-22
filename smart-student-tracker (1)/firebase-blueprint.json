@@ -1,0 +1,156 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents a student user in the system.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "plan": { "type": "string", "enum": ["free", "pro", "premium"] },
+        "settings": { "type": "object" },
+        "timetableMetadata": { "type": "object" },
+        "streak": { "type": "integer" },
+        "bestStreak": { "type": "integer" },
+        "planUpgradeDate": { "type": "string" }
+      },
+      "required": ["name", "email", "plan"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "A subject or course tracked by the student.",
+      "type": "object",
+      "properties": {
+        "subjectName": { "type": "string" },
+        "color": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "type": { "type": "string" },
+        "totalClasses": { "type": "integer" },
+        "attendedClasses": { "type": "integer" }
+      },
+      "required": ["subjectName", "color", "totalClasses", "attendedClasses"]
+    },
+    "TimetableEntry": {
+      "title": "Timetable Entry",
+      "description": "A scheduled class in the student's timetable.",
+      "type": "object",
+      "properties": {
+        "subjectId": { "type": "string" },
+        "day": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "room": { "type": "string" },
+        "type": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["subjectId", "day", "startTime", "endTime"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "A task or assignment for a subject.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "priority": { "type": "string" },
+        "deadline": { "type": "string" },
+        "status": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["title", "subjectId", "deadline", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "A system or academic notification.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "date": { "type": "string" },
+        "read": { "type": "boolean" },
+        "type": { "type": "string" }
+      },
+      "required": ["title", "message", "date", "read"]
+    },
+    "Faculty": {
+      "title": "Faculty",
+      "description": "Information about a faculty member.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "designation": { "type": "string" },
+        "office": { "type": "string" },
+        "availability": { "type": "string" }
+      }
+    },
+    "Practical": {
+      "title": "Practical",
+      "description": "A practical or lab session.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "day": { "type": "string" },
+        "time": { "type": "string" },
+        "status": { "type": "string" }
+      }
+    },
+    "Group": {
+      "title": "Group",
+      "description": "A collaborative group for students.",
+      "type": "object",
+      "properties": {
+        "groupId": { "type": "string" },
+        "groupName": { "type": "string" },
+        "adminId": { "type": "string" },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "userId": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          }
+        },
+        "sharedAssignments": { "type": "array" },
+        "sharedAnnouncements": { "type": "array" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Main user document."
+    },
+    "/users/{userId}/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "User's tracked subjects."
+    },
+    "/users/{userId}/timetable/{entryId}": {
+      "schema": "TimetableEntry",
+      "description": "User's timetable entries."
+    },
+    "/users/{userId}/assignments/{assignmentId}": {
+      "schema": "Assignment",
+      "description": "User's assignments."
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User's notifications."
+    },
+    "/users/{userId}/faculty/{facultyId}": {
+      "schema": "Faculty",
+      "description": "User's faculty contacts."
+    },
+    "/users/{userId}/practicals/{practicalId}": {
+      "schema": "Practical",
+      "description": "User's practical sessions."
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Top-level collection for collaborative groups."
+    }
+  }
+}
